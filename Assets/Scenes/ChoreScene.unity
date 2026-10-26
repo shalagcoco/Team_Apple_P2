@@ -8099,8 +8099,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -11182,7 +11182,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9462287e6f4ddf1428772cc6a4ef3f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OfficePasswordComputers
-  bossHintPanel: {fileID: 97059410}
   player: {fileID: 10247401}
   interactionRadius: 1
   computers:
@@ -11209,11 +11208,14 @@ MonoBehaviour:
   computerWindow: {fileID: 1333033323}
   bossLoginPage: {fileID: 1689572749}
   cluePage: {fileID: 6391235}
+  employeeNameText: {fileID: 1280269557}
   passwordInput: {fileID: 2147214492}
   feedbackText: {fileID: 1549249233}
   loginButton: {fileID: 57855301}
   clueText: {fileID: 390312167}
+  bossHintPanel: {fileID: 97059410}
   correctPassword: BerN
+  catsbyPassword: CatG
   mainCamera: {fileID: 519420031}
   computerCameraSize: 3.2
   cameraOffset: {x: 0, y: 0}
