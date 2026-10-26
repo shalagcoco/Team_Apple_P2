@@ -25,6 +25,8 @@ public class OfficePasswordComputers : MonoBehaviour
         [NonSerialized] public string savedFeedback;
         [NonSerialized] public Color savedFeedbackColor;
     }
+    [Header("Task Board")]
+    [SerializeField] private TaskBoardUI taskBoard;
 
     [Header("Player")]
     [SerializeField] private Transform player;
@@ -218,7 +220,7 @@ public class OfficePasswordComputers : MonoBehaviour
     private void OpenBossComputer()
     {
         if (employeeNameText != null)
-            employeeNameText.text = "Beryl Nocat";
+            employeeNameText.text = "Boss";
 
         if (bossUnlocked)
         {
@@ -347,10 +349,14 @@ public class OfficePasswordComputers : MonoBehaviour
         {
             bossUnlocked = true;
 
+            // Complete task 2.
+            if (taskBoard != null)
+            {
+                taskBoard.CompleteBossTask();
+            }
+
             Debug.Log("Beryl Nocat's PC unlocked.");
 
-            // The four numbered PCs now become
-            // employee login computers.
             ShowBossUnlocked();
             return;
         }
@@ -368,6 +374,12 @@ public class OfficePasswordComputers : MonoBehaviour
                 StringComparison.Ordinal))
         {
             catsbyUnlocked = true;
+
+            // Complete task 3.
+            if (taskBoard != null)
+            {
+                taskBoard.CompleteCatsbyTask();
+            }
 
             HideLoginControls();
 

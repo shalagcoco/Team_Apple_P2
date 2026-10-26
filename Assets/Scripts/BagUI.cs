@@ -20,7 +20,9 @@ public class BagUI : MonoBehaviour
     [SerializeField] private Button idTabButton;
     [SerializeField] private Button inventoryTabButton;
 
-    // UI colors
+    [Header("Task Board")]
+    [SerializeField] private TaskBoardUI taskBoard;
+
     private readonly Color selectedColor =
         new Color32(52, 71, 93, 255);
 
@@ -35,11 +37,14 @@ public class BagUI : MonoBehaviour
 
     private void Start()
     {
-        ShowMapPage();
+        // Begin with Tasks as the default page.
+        // This prevents the Map task from being
+        // completed automatically at game startup.
+        ShowTasksPage();
+
         bagPanel.SetActive(false);
     }
 
-    // Open or close the bag
     public void ToggleBag()
     {
         bagPanel.SetActive(!bagPanel.activeSelf);
@@ -50,11 +55,19 @@ public class BagUI : MonoBehaviour
         bagPanel.SetActive(false);
     }
 
-    // Tab button methods
+
     public void ShowMapPage()
     {
+        // Display the map page.
         ShowPage(0);
+
+        // Complete the map task when the player views it.
+        if (bagPanel.activeInHierarchy && taskBoard != null)
+        {
+            taskBoard.CompleteMapTask();
+        }
     }
+
 
     public void ShowTasksPage()
     {
@@ -71,7 +84,6 @@ public class BagUI : MonoBehaviour
         ShowPage(3);
     }
 
-    // Display only the selected page
     private void ShowPage(int pageIndex)
     {
         mapPage.SetActive(pageIndex == 0);
@@ -85,9 +97,11 @@ public class BagUI : MonoBehaviour
         UpdateTab(inventoryTabButton, pageIndex == 3);
     }
 
-    // Highlight the selected tab
     private void UpdateTab(Button button, bool selected)
     {
+        if (button == null)
+            return;
+
         button.image.color =
             selected ? selectedColor : normalColor;
 
