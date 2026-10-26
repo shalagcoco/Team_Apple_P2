@@ -20,7 +20,7 @@ public class OfficePasswordComputers : MonoBehaviour
         public StationType type;
         public string clue;
     }
-
+    [SerializeField] private GameObject bossHintPanel;
     [Header("Player")]
     [SerializeField] private Transform player;
     [SerializeField] private float interactionRadius = 1.0f;
@@ -28,7 +28,7 @@ public class OfficePasswordComputers : MonoBehaviour
     [Header("Computers")]
     [SerializeField] private ComputerStation[] computers;
 
-    [Header("UI")]
+    [Header("Computer UI")]
     [SerializeField] private GameObject computerWindow;
     [SerializeField] private GameObject bossLoginPage;
     [SerializeField] private GameObject cluePage;
@@ -44,15 +44,32 @@ public class OfficePasswordComputers : MonoBehaviour
     [Header("Password")]
     [SerializeField] private string correctPassword = "BerN";
 
-    // Currently visited computer
+    [Header("Split Screen Camera")]
+    [SerializeField] private Camera mainCamera;
+
+    [SerializeField] private float computerCameraSize = 3.2f;
+
+    [SerializeField]
+    private Vector2 cameraOffset =
+        Vector2.zero;
+
+    [Header("Optional Bag UI")]
+    [SerializeField] private GameObject bagPanel;
+
+    // Current computer
     private ComputerStation currentComputer;
 
-    // Boss login state
+    // Puzzle state
     private bool bossUnlocked = false;
-
-    // False: PCs display numbers
-    // True: PCs display letters
     private bool lettersRevealed = false;
+
+    // Split-screen state
+    private bool splitViewActive = false;
+
+    // Previous camera settings
+    private Rect previousCameraRect;
+    private float previousCameraSize;
+    private Vector3 previousCameraPosition;
 
     // ==========================================
     // INITIALIZATION
@@ -60,42 +77,44 @@ public class OfficePasswordComputers : MonoBehaviour
 
     private void Awake()
     {
-        // Computer UI starts hidden.
+        if (mainCamera == null)
+            mainCamera = Camera.main;
+
         if (computerWindow != null)
-        {
             computerWindow.SetActive(false);
-        }
 
-        passwordInput.text = "";
-        feedbackText.text = "";
+        // Clear UI only at the beginning of the game.
+        if (passwordInput != null)
+            passwordInput.text = "";
 
-}
+        if (feedbackText != null)
+            feedbackText.text = "";
+    }
 
-// ==========================================
-// COMPUTER PROXIMITY
-// ==========================================
+    // ==========================================
+    // DETECT NEARBY COMPUTERS
+    // ==========================================
 
-private void Update()
+    private void Update()
     {
         if (player == null || computerWindow == null)
             return;
 
         ComputerStation nearest = FindNearestComputer();
 
-        // Do nothing while staying at the same PC.
+        // Staying near the same computer.
         if (nearest == currentComputer)
             return;
 
         currentComputer = nearest;
 
-        // Player walked away from all computers.
+        // Player walked away from computers.
         if (currentComputer == null)
         {
-            computerWindow.SetActive(false);
+            CloseComputerWindow();
             return;
         }
 
-        // Player approached a computer.
         OpenComputer(currentComputer);
     }
 
@@ -128,8 +147,19 @@ private void Update()
         return nearest;
     }
 
+    // ==========================================
+    // OPEN COMPUTER
+    // ==========================================
+
     private void OpenComputer(ComputerStation computer)
     {
+        // Close backpack panel if it was open.
+        if (bagPanel != null)
+            bagPanel.SetActive(false);
+
+        // Activate split-screen view.
+        EnterSplitView();
+
         computerWindow.SetActive(true);
 
         bool isBoss = computer.type == StationType.Boss;
@@ -148,15 +178,108 @@ private void Update()
     }
 
     // ==========================================
-    // BOSS COMPUTER LOGIN
+    // SPLIT-SCREEN CAMERA
     // ==========================================
 
+    private void EnterSplitView()
+    {
+        if (splitViewActive)
+            return;
+
+        if (mainCamera == null)
+        {
+            Debug.LogWarning("Main Camera not assigned!");
+            return;
+        }
+
+        // Save the normal office camera settings.
+        previousCameraRect = mainCamera.rect;
+
+        previousCameraSize = mainCamera.orthographicSize;
+
+        previousCameraPosition =
+            mainCamera.transform.position;
+
+        // Render the world in the LEFT HALF.
+        // Preserve the existing reserved HUD height.
+        mainCamera.rect = new Rect(
+            previousCameraRect.x,
+            previousCameraRect.y,
+            previousCameraRect.width * 0.5f,
+            previousCameraRect.height
+        );
+
+        // Zoom closer to Catsby.
+        mainCamera.orthographicSize = computerCameraSize;
+
+        splitViewActive = true;
+
+        FocusCameraOnPlayer();
+    }
+
+    private void LateUpdate()
+    {
+        // Keep Catsby visible while using a computer.
+        if (splitViewActive)
+        {
+            FocusCameraOnPlayer();
+        }
+    }
+
+    private void FocusCameraOnPlayer()
+    {
+        if (player == null || mainCamera == null)
+            return;
+
+        mainCamera.transform.position = new Vector3(
+            player.position.x + cameraOffset.x,
+            player.position.y + cameraOffset.y,
+            previousCameraPosition.z
+        );
+    }
+
+    // ==========================================
+    // CLOSE COMPUTER
+    // ==========================================
+
+    public void CloseComputerWindow()
+    {
+        if (computerWindow != null)
+            computerWindow.SetActive(false);
+
+        RestoreCamera();
+    }
+
+    private void RestoreCamera()
+    {
+        if (!splitViewActive || mainCamera == null)
+            return;
+
+        // Restore full office view.
+        mainCamera.rect = previousCameraRect;
+
+        mainCamera.orthographicSize = previousCameraSize;
+
+        mainCamera.transform.position =
+            previousCameraPosition;
+
+        splitViewActive = false;
+    }
+
+    private void OnDisable()
+    {
+        // Safety: restore camera if this script is disabled.
+        RestoreCamera();
+    }
+
+    // ==========================================
+    // BOSS LOGIN
+    // ==========================================
 
     private void OpenBossLogin()
     {
         if (bossUnlocked)
         {
-            // Boss computer already unlocked.
             passwordInput.gameObject.SetActive(false);
             loginButton.gameObject.SetActive(false);
 
@@ -164,85 +287,53 @@ private void Update()
         }
         else
         {
-            // Show login controls.
             passwordInput.gameObject.SetActive(true);
             loginButton.gameObject.SetActive(true);
 
-            // IMPORTANT:
-            // Do not clear passwordInput.text.
-            // Do not clear feedbackText.text.
-            // Everything stays as Catsby left it.
+            // Do not reset the input or feedback.
+            // Catsby sees the computer exactly as they left it.
         }
     }
 
-
-    // Called ONLY when the LOGIN button is clicked.
     public void CheckPassword()
     {
-        Debug.Log("LOGIN BUTTON CLICKED!");
-
-        if (currentComputer == null)
-        {
-            Debug.LogWarning("No computer selected!");
+        if (currentComputer == null ||
+            currentComputer.type != StationType.Boss)
             return;
-        }
-
-        if (currentComputer.type != StationType.Boss)
-        {
-            Debug.LogWarning("Not at boss computer!");
-            return;
-        }
 
         if (bossUnlocked)
             return;
 
-        if (passwordInput == null || feedbackText == null)
-        {
-            Debug.LogError("Missing password UI references!");
-            return;
-        }
+        string attempt = passwordInput.text;
 
-        string attempt = passwordInput.text.Trim();
-
-        Debug.Log("Password submitted: " + attempt);
-
-        // ======================================
-        // EMPTY PASSWORD
-        // ======================================
-
-        if (attempt.Length == 0)
+        if (string.IsNullOrEmpty(attempt))
         {
             ShowError("Enter a password.");
             return;
         }
 
         // ======================================
-        // SPECIAL PUZZLE TRIGGER: EXACTLY 3142
+        // EXACT PUZZLE TRIGGER: 3142
         // ======================================
 
         if (attempt == "3142")
         {
-            // Switch all four computers to letters.
-            if (!lettersRevealed)
-            {
-                lettersRevealed = true;
-
-                Debug.Log(
-                    "PUZZLE ACTIVATED! " +
-                    "All computers now show letters."
-                );
-            }
+            lettersRevealed = true;
 
             ShowError(
-                "ERROR: ALPHABETIC CHARACTERS ONLY!\n" +
+                "ALPHABETIC CHARACTERS ONLY!\n" +
                 "Numbers must mean something else...\nMaybe you should check those computers again..."
+            );
+
+            Debug.Log(
+                "Puzzle activated: computers show letters."
             );
 
             return;
         }
 
         // ======================================
-        // CORRECT PASSWORD: BerN
+        // CORRECT CASE-SENSITIVE PASSWORD
         // ======================================
 
         if (string.Equals(
@@ -252,30 +343,23 @@ private void Update()
         {
             bossUnlocked = true;
 
-            Debug.Log("SUCCESS! Boss computer unlocked!");
-
-            // Hide login elements.
             passwordInput.gameObject.SetActive(false);
             loginButton.gameObject.SetActive(false);
 
             ShowSuccess();
 
-            // Later we'll open the boss desktop here.
+            Debug.Log("Boss computer unlocked!");
+
+            // Later: display boss desktop here.
             return;
         }
 
-        // ======================================
-        // ALL OTHER PASSWORDS
-        // ======================================
-
-        // 1, 31, 1234, ABCD, etc. are incorrect.
-        // None of them switches the computers.
-
+        // Every other attempt is incorrect.
         ShowError("Incorrect password!");
     }
 
     // ==========================================
-    // FEEDBACK MESSAGES
+    // LOGIN FEEDBACK
     // ==========================================
 
     private void ShowError(string message)
@@ -297,48 +381,36 @@ private void Update()
         feedbackText.text = message;
         feedbackText.color = color;
 
-        // Make sure text renders above other
-        // objects inside LoginPage.
         feedbackText.transform.SetAsLastSibling();
-
         feedbackText.ForceMeshUpdate();
     }
 
+
     private void ShowSuccess()
     {
-        if (feedbackText == null)
-            return;
+        // Hide password controls.
+        passwordInput.gameObject.SetActive(false);
+        loginButton.gameObject.SetActive(false);
 
-        // Place success message in the center.
-        feedbackText.rectTransform.anchoredPosition =
-            Vector2.zero;
+        // Hide the old feedback.
+        feedbackText.gameObject.SetActive(false);
 
-        feedbackText.rectTransform.sizeDelta =
-            new Vector2(650, 100);
-
-        feedbackText.fontSize = 48;
-        feedbackText.alignment =
-            TextAlignmentOptions.Center;
-
-        ShowFeedback(
-            "ACCESS GRANTED!",
-            new Color32(160, 240, 174, 255)
-        );
+        // Display Beryl's reminder instead.
+        bossHintPanel.SetActive(true);
     }
 
+
     // ==========================================
-    // NUMBERED COMPUTER CLUES
+    // FOUR CLUE COMPUTERS
     // ==========================================
 
     private void ShowComputerClue(ComputerStation computer)
     {
-        string displayedClue = "";
+        string displayedClue = computer.clue;
 
         if (!lettersRevealed)
         {
-            // ==================================
-            // PHASE 1: NUMBERS
-            // ==================================
+            // BEFORE entering 3142
 
             switch (computer.name)
             {
@@ -357,22 +429,16 @@ private void Update()
                 case "PC4":
                     displayedClue = "2";
                     break;
-
-                default:
-                    displayedClue = computer.clue;
-                    break;
             }
         }
         else
         {
-            // ==================================
-            // PHASE 2: LETTERS
-            // ==================================
+            // AFTER entering 3142
 
             switch (computer.name)
             {
                 case "PC1":
-                    displayedClue = "e";
+                    displayedClue = "E";
                     break;
 
                 case "PC2":
@@ -384,25 +450,12 @@ private void Update()
                     break;
 
                 case "PC4":
-                    displayedClue = "r";
-                    break;
-
-                default:
-                    displayedClue = computer.clue;
+                    displayedClue = "R";
                     break;
             }
         }
 
         clueText.text = displayedClue;
-
-        Debug.Log(
-            computer.name + " displays: " + displayedClue
-        );
-    }
-
-    public void CloseComputerWindow()
-    {
-        computerWindow.SetActive(false);
     }
 
     // ==========================================
