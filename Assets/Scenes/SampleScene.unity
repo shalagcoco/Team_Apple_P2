@@ -490,6 +490,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 676339870}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &312323369 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7439161946597446663, guid: 355080dbe1fd6824393b026eeec9462e, type: 3}
+  m_PrefabInstance: {fileID: 7997679649293607192}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &312323377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 312323369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92c75703b1c354d7fac6715f6785289d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
+  bulletPrefab: {fileID: 4580718547019628626, guid: 214f0e0dd9d5a41ccb798e5bc151f07a, type: 3}
+  attackInterval: 1
+  muzzleOffset: 0.45
 --- !u!1 &320291017
 GameObject:
   m_ObjectHideFlags: 0
@@ -3762,7 +3782,8 @@ MonoBehaviour:
   - {fileID: 634378843}
   - {fileID: 525917872}
   - {fileID: 1977424278}
-  spawnInterval: 1
+  spawnInterval: 4
+  firstSpawnDelay: 3
   maxEnemies: 5
   minimumSpawnDistance: 4
 --- !u!1 &1392631451
@@ -5842,10 +5863,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8553620734903112314, guid: 355080dbe1fd6824393b026eeec9462e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7439161946597446663, guid: 355080dbe1fd6824393b026eeec9462e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 312323377}
   m_SourcePrefab: {fileID: 100100000, guid: 355080dbe1fd6824393b026eeec9462e, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
