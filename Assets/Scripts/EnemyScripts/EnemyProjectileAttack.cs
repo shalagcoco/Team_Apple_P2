@@ -36,11 +36,39 @@ public class EnemyProjectileAttack : MonoBehaviour
         if (distance > attackRange)
             return;
 
+        // Only shoot if there is a clear path to the player.
+        if (!IsPathClear())
+            return;
+
         if (Time.time >= nextAttackTime)
         {
             ShootProjectile();
             nextAttackTime = Time.time + attackCooldown;
         }
+    }
+
+    bool IsPathClear()
+    {
+        Vector2 direction =
+            ((Vector2)player.position -
+             (Vector2)transform.position).normalized;
+
+        RaycastHit2D[] hits = Physics2D.RaycastAll(
+            transform.position,
+            direction,
+            attackRange
+        );
+
+        foreach (RaycastHit2D hit in hits)
+        {
+            if (hit.collider != null &&
+                hit.collider.CompareTag("Obstacle"))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     void ShootProjectile()
@@ -56,7 +84,6 @@ public class EnemyProjectileAttack : MonoBehaviour
 
         if (projectileScript != null)
         {
-            //Debug.Log("Projectile fired at player.");
             projectileScript.SetTarget(player);
         }
         else
