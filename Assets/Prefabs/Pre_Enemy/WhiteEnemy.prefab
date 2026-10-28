@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 748799305126078613}
   - component: {fileID: 2543036385690978136}
   - component: {fileID: 7449258968956971785}
+  - component: {fileID: -4185483835792625947}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: WhiteEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -173,6 +174,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
   moveSpeed: 3
   checkDistance: 1
+  obstacleCheckRadius: 0.2
+  avoidanceCommitTime: 0.4
+  directionPersistence: 0.5
   animator: {fileID: 7449258968956971785}
 --- !u!95 &7449258968956971785
 Animator:
@@ -196,3 +200,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-4185483835792625947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3089683939323775140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cc04565d81c14d9fb4396c12bab9d44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PhoneEnemyResponder
+  chaseMovementScript: {fileID: 0}
+  moveSpeed: 2.5
+  stopDistance: 0.45
