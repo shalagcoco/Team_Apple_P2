@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class OfficePasswordComputers : MonoBehaviour
@@ -27,6 +28,17 @@ public class OfficePasswordComputers : MonoBehaviour
     }
     [Header("Task Board")]
     [SerializeField] private TaskBoardUI taskBoard;
+
+    [Header("Victory Screen")]
+    [SerializeField] private GameObject victoryPanel;
+    private bool gameFinished = false;
+
+
+    // Stop WASD movement while Catsby is using a computer.
+    private PlayerMovement playerMovement;
+    private Rigidbody2D playerBody;
+    private bool movementPausedForComputer;
+    private bool movementWasEnabled;
 
     [Header("Player")]
     [SerializeField] private Transform player;
@@ -93,8 +105,18 @@ public class OfficePasswordComputers : MonoBehaviour
         if (mainCamera == null)
             mainCamera = Camera.main;
 
+        if (player != null)
+        {
+            playerMovement = player.GetComponent<PlayerMovement>();
+            playerBody = player.GetComponent<Rigidbody2D>();
+        }
+
         if (computerWindow != null)
             computerWindow.SetActive(false);
+
+        // Victory screen starts hidden until CatG is accepted.
+        if (victoryPanel != null)
+            victoryPanel.SetActive(false);
 
         if (bossHintPanel != null)
             bossHintPanel.SetActive(false);
@@ -119,6 +141,9 @@ public class OfficePasswordComputers : MonoBehaviour
 
     private void Update()
     {
+        // Do not reopen a computer after the ending has been reached.
+        if (gameFinished) return;
+
         if (player == null || computerWindow == null)
             return;
 
@@ -175,6 +200,7 @@ public class OfficePasswordComputers : MonoBehaviour
 
     private void OpenComputer(ComputerStation pc)
     {
+
         if (bagPanel != null)
             bagPanel.SetActive(false);
 
@@ -381,21 +407,45 @@ public class OfficePasswordComputers : MonoBehaviour
                 taskBoard.CompleteCatsbyTask();
             }
 
-            HideLoginControls();
-
-            ShowFeedback(
-                "ACCESS GRANTED!\nWelcome, Catsby Great.",
-                successColor
-            );
-
-            Debug.Log("Catsby's computer unlocked!");
-
-            // Later: add the next chore or win screen.
+            // Finish immediately. The victory panel covers the entire screen.
+            ShowVictoryScreen();
             return;
         }
 
         // Every other workstation rejects CatG.
         ShowError("Incorrect password!");
+    }
+
+    private void ShowVictoryScreen()
+    {
+        gameFinished = true;
+
+        // Exit split screen and restore the normal camera/movement state.
+        CloseComputerWindow();
+
+        if (victoryPanel == null)
+        {
+            Debug.LogError(
+                "Assign VictoryPanel on GameHUD -> OfficePasswordComputers!",
+                this
+            );
+            return;
+        }
+
+        // Full-screen terminal covers Catpack, HUD, and the office.
+        victoryPanel.SetActive(true);
+        victoryPanel.transform.SetAsLastSibling();
+
+        // Freeze enemies, player, and physics; UI buttons remain clickable.
+        Time.timeScale = 0f;
+        Debug.Log("ACCESS GRANTED! SHIFT COMPLETE!");
+    }
+
+    // Hook VictoryPanel's RestartButton to this method.
+    public void RestartScene()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     // =========================================
@@ -527,6 +577,34 @@ public class OfficePasswordComputers : MonoBehaviour
     }
 
     // =========================================
+    // STOP PLAYER MOVEMENT WHILE TYPING
+    // =========================================
+
+    private void PauseMovementForComputer()
+    {
+        if (movementPausedForComputer || playerMovement == null)
+            return;
+
+        movementWasEnabled = playerMovement.enabled;
+        playerMovement.enabled = false;
+        if (playerBody != null)
+            playerBody.linearVelocity = Vector2.zero;
+        movementPausedForComputer = true;
+    }
+
+    private void ResumeMovementAfterComputer()
+    {
+        if (!movementPausedForComputer)
+            return;
+
+        if (playerBody != null)
+            playerBody.linearVelocity = Vector2.zero;
+        if (playerMovement != null)
+            playerMovement.enabled = movementWasEnabled;
+        movementPausedForComputer = false;
+    }
+
+    // =========================================
     // CLOSE COMPUTER WINDOW
     // =========================================
 
@@ -538,6 +616,7 @@ public class OfficePasswordComputers : MonoBehaviour
             computerWindow.SetActive(false);
 
         RestoreCamera();
+        ResumeMovementAfterComputer();
     }
 
     private void RestoreCamera()
@@ -556,6 +635,7 @@ public class OfficePasswordComputers : MonoBehaviour
     private void OnDisable()
     {
         RestoreCamera();
+        ResumeMovementAfterComputer();
     }
 
     // =========================================
