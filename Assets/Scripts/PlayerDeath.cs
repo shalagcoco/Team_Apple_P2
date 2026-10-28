@@ -1,28 +1,90 @@
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 
 public class PlayerDeath : MonoBehaviour
 {
-    public GameObject gameOverText;
+    [Header("Health")]
+    public int maxHealth = 3;
+    private int currentHealth;
 
+    [Header("Heart UI")]
+    public Image[] hearts;
+    public Sprite fullHeart;
+    public Sprite emptyHeart;
+
+    [Header("Game Menu")]
+    public GameMenu gameMenu;
+
+    [Header("Damage Settings")]
+    public float invincibilityTime = 1f;
+
+    private bool canTakeDamage = true;
     private bool isDead = false;
 
     void Start()
     {
-        gameOverText.SetActive(false);
+        currentHealth = maxHealth;
+        UpdateHearts();
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy") && !isDead)
+        if (collision.gameObject.CompareTag("Enemy")
+            && canTakeDamage
+            && !isDead)
         {
-            isDead = true;
-            GameOver();
+            TakeDamage();
         }
     }
 
-    void GameOver()
+    void TakeDamage()
     {
-        gameOverText.SetActive(true);
-        Time.timeScale = 0f;
+        currentHealth--;
+
+        UpdateHearts();
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+        else
+        {
+            StartCoroutine(DamageCooldown());
+        }
+    }
+
+    IEnumerator DamageCooldown()
+    {
+        canTakeDamage = false;
+
+        yield return new WaitForSeconds(invincibilityTime);
+
+        canTakeDamage = true;
+    }
+
+    void UpdateHearts()
+    {
+        for (int i = 0; i < hearts.Length; i++)
+        {
+            if (i < currentHealth)
+            {
+                hearts[i].sprite = fullHeart;
+            }
+            else
+            {
+                hearts[i].sprite = emptyHeart;
+            }
+        }
+    }
+
+    void Die()
+    {
+        isDead = true;
+
+        if (gameMenu != null)
+        {
+            gameMenu.GameOver();
+        }
     }
 }
