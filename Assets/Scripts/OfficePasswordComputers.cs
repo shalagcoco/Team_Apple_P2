@@ -470,10 +470,10 @@ public class OfficePasswordComputers : MonoBehaviour
         {
             switch (pc.name)
             {
-                case "PC1": displayed = "E"; break;
+                case "PC1": displayed = "e"; break;
                 case "PC2": displayed = "N"; break;
                 case "PC3": displayed = "B"; break;
-                case "PC4": displayed = "R"; break;
+                case "PC4": displayed = "r"; break;
             }
         }
 
