@@ -77,7 +77,7 @@ public class EnemySpawner : MonoBehaviour
         if (GameObject.FindGameObjectsWithTag("Enemy").Length >= maxEnemies)
             return;
 
-        //start: NEW CODE FOR VARIET UNLOCKING
+        //start: NEW CODE FOR VARIENT UNLOCKING
         //------------------------------------
         // Determine how many variants are currently unlocked.
         float elapsedTime = Time.time - gameStartTime;

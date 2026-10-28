@@ -64,29 +64,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6980399794835112968, guid: b0ed9c2466d9e45c1ae6b3b4506b61fc, type: 3}
+      propertyPath: maxHealth
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3089683939323775140, guid: b0ed9c2466d9e45c1ae6b3b4506b61fc, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4329227486030565704}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0ed9c2466d9e45c1ae6b3b4506b61fc, type: 3}
---- !u!1 &7782516177413532326 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3089683939323775140, guid: b0ed9c2466d9e45c1ae6b3b4506b61fc, type: 3}
-  m_PrefabInstance: {fileID: 5107590048764224002}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4329227486030565704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7782516177413532326}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7a2666fa426a8e4f9b3464ef12988d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  maxHealth: 3
