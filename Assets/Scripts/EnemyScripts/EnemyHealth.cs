@@ -21,10 +21,7 @@ public class EnemyHealth : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Max(0, currentHealth);
 
-        Debug.Log(
-            gameObject.name + " health: " +
-            currentHealth + "/" + maxHealth
-        );
+        //Debug.Log( gameObject.name + " health: " + currentHealth + "/" + maxHealth);
 
         if (currentHealth <= 0)
         {
