@@ -128,8 +128,8 @@ GameObject:
   - component: {fileID: 75749878147009145}
   - component: {fileID: 747115317991164184}
   - component: {fileID: 3929884463216569651}
-  - component: {fileID: 8553620734903112314}
   - component: {fileID: 4587288409396629619}
+  - component: {fileID: 7261238608458362810}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -294,20 +294,6 @@ MonoBehaviour:
   maxX: 20
   minY: -12
   maxY: 12
---- !u!114 &8553620734903112314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7439161946597446663}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9b4b650e0b3348afb882f4646893fd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
-  bulletPrefab: {fileID: 4580718547019628626, guid: 214f0e0dd9d5a41ccb798e5bc151f07a, type: 3}
-  attackInterval: 1
 --- !u!114 &4587288409396629619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,3 +307,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerDeath
   gameOverText: {fileID: 0}
+--- !u!114 &7261238608458362810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7439161946597446663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92c75703b1c354d7fac6715f6785289d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
+  bulletPrefab: {fileID: 4580718547019628626, guid: 214f0e0dd9d5a41ccb798e5bc151f07a, type: 3}
+  attackInterval: 1
+  muzzleOffset: 0.45

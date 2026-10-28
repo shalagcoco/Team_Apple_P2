@@ -56,6 +56,7 @@ public class EnemyProjectileAttack : MonoBehaviour
 
         if (projectileScript != null)
         {
+            //Debug.Log("Projectile fired at player.");
             projectileScript.SetTarget(player);
         }
         else

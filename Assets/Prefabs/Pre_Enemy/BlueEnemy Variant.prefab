@@ -79,9 +79,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3089683939323775140, guid: b0ed9c2466d9e45c1ae6b3b4506b61fc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3481449305237137585}
-    - targetCorrespondingSourceObject: {fileID: 3089683939323775140, guid: b0ed9c2466d9e45c1ae6b3b4506b61fc, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7588654925810954625}
   m_SourcePrefab: {fileID: 100100000, guid: b0ed9c2466d9e45c1ae6b3b4506b61fc, type: 3}
 --- !u!114 &7261236957492930508 stripped
 MonoBehaviour:
@@ -114,18 +111,3 @@ MonoBehaviour:
   attackRange: 15
   attackCooldown: 2
   projectilePrefab: {fileID: 7153243975219644781, guid: 77ee9f92a0ff58a478649b8fe05ab619, type: 3}
---- !u!114 &7588654925810954625
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7885650906938828848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cc04565d81c14d9fb4396c12bab9d44, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PhoneEnemyResponder
-  chaseMovementScript: {fileID: 0}
-  moveSpeed: 2.5
-  stopDistance: 0.45

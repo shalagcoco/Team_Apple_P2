@@ -490,26 +490,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 676339870}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &312323369 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7439161946597446663, guid: 355080dbe1fd6824393b026eeec9462e, type: 3}
-  m_PrefabInstance: {fileID: 7997679649293607192}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &312323377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 312323369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92c75703b1c354d7fac6715f6785289d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
-  bulletPrefab: {fileID: 4580718547019628626, guid: 214f0e0dd9d5a41ccb798e5bc151f07a, type: 3}
-  attackInterval: 1
-  muzzleOffset: 0.45
 --- !u!1 &320291017
 GameObject:
   m_ObjectHideFlags: 0
@@ -3771,8 +3751,12 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 97f35fbbb521f4f36b473b8d8af5adcb, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
-  enemyPrefab: {fileID: 3089683939323775140, guid: b0ed9c2466d9e45c1ae6b3b4506b61fc, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  enemyPrefabs:
+  - {fileID: 3089683939323775140, guid: b0ed9c2466d9e45c1ae6b3b4506b61fc, type: 3}
+  - {fileID: 7782516177413532326, guid: bc5a1ea926fb4a94ab67ce5d96b2142d, type: 3}
+  - {fileID: 7885650906938828848, guid: b3b3e528864454c40bdab2a7b9f3d2ab, type: 3}
+  - {fileID: 354650888581318037, guid: b191d3d64d477094c90017820d26d907, type: 3}
   spawnPoints:
   - {fileID: 230007623}
   - {fileID: 328000628}
@@ -3786,6 +3770,7 @@ MonoBehaviour:
   firstSpawnDelay: 3
   maxEnemies: 5
   minimumSpawnDistance: 4
+  variantUnlockInterval: 30
 --- !u!1 &1392631451
 GameObject:
   m_ObjectHideFlags: 0
@@ -5859,6 +5844,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7261238608458362810, guid: 355080dbe1fd6824393b026eeec9462e, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 4580718547019628626, guid: 214f0e0dd9d5a41ccb798e5bc151f07a, type: 3}
+    - target: {fileID: 7261238608458362810, guid: 355080dbe1fd6824393b026eeec9462e, type: 3}
+      propertyPath: attackInterval
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7439161946597446663, guid: 355080dbe1fd6824393b026eeec9462e, type: 3}
       propertyPath: m_Name
       value: Player
@@ -5867,10 +5860,7 @@ PrefabInstance:
     - {fileID: 8553620734903112314, guid: 355080dbe1fd6824393b026eeec9462e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7439161946597446663, guid: 355080dbe1fd6824393b026eeec9462e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 312323377}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 355080dbe1fd6824393b026eeec9462e, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
