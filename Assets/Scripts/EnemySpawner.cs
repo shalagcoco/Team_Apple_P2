@@ -1,82 +1,47 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [Header("Enemy Setup")]
-    public GameObject[] enemyPrefabs;
+    public GameObject enemyPrefab;
+
     public Transform[] spawnPoints;
 
-    [Header("Difficulty")]
-    [Min(0.5f)] public float spawnInterval = 4f;
-    [Min(0f)] public float firstSpawnDelay = 3f;
-    [Min(1)] public int maxEnemies = 5;
-    [Min(0f)] public float minimumSpawnDistance = 4f;
+    public float spawnInterval = 1f;
+    public int maxEnemies = 5;
 
-    [Header("Enemy Unlocks")]
-    [Min(0.1f)] public float variantUnlockInterval = 30f;
+    public float minimumSpawnDistance = 4f;
 
     private Transform player;
-    private float gameStartTime;
 
     void Start()
     {
-        gameStartTime = Time.time;
-
         GameObject playerObject =
             GameObject.FindGameObjectWithTag("Player");
 
-        if (playerObject == null)
+        if (playerObject != null)
         {
-            Debug.LogWarning(
-                "EnemySpawner: No GameObject tagged 'Player' was found.",
-                this
-            );
-            return;
+            player = playerObject.transform;
         }
-
-        player = playerObject.transform;
-
-        if (enemyPrefabs == null ||
-            enemyPrefabs.Length == 0 ||
-            enemyPrefabs[0] == null ||
-            spawnPoints == null ||
-            spawnPoints.Length == 0)
-        {
-            Debug.LogError(
-                "EnemySpawner: Assign at least the first Enemy Prefab " +
-                "and your Spawn Points in the Inspector.",
-                this
-            );
-            return;
-        }
-
-        // Preserve the minimum spawn interval.
-        // The existing SampleScene stores '1' in its Inspector, so the old
-        // serialized value otherwise overrides the new 4-second code default.
-        spawnInterval = Mathf.Max(4f, spawnInterval);
 
         InvokeRepeating(
             nameof(SpawnEnemy),
-            firstSpawnDelay,
+            0f,
             spawnInterval
         );
     }
 
-    void OnDisable()
-    {
-        CancelInvoke(nameof(SpawnEnemy));
-    }
-
     void SpawnEnemy()
     {
-        if (player == null || enemyPrefabs == null)
+        if (player == null)
             return;
 
-        // Stop spawning when the enemy limit is reached.
-        if (GameObject.FindGameObjectsWithTag("Enemy").Length >= maxEnemies)
+        GameObject[] enemies =
+            GameObject.FindGameObjectsWithTag("Enemy");
+
+        if (enemies.Length >= maxEnemies)
             return;
 
+<<<<<<< Updated upstream
         //start: NEW CODE FOR VARIENT UNLOCKING
         //------------------------------------
         // Determine how many variants are currently unlocked.
@@ -103,25 +68,18 @@ public class EnemySpawner : MonoBehaviour
         }
 
         if (availableEnemies.Count == 0)
+=======
+        if (spawnPoints == null || spawnPoints.Length == 0)
+>>>>>>> Stashed changes
             return;
 
-        // Choose one of the currently unlocked enemy variants.
-        GameObject selectedEnemy = availableEnemies[
-            Random.Range(0, availableEnemies.Count)
-        ];
-        //end: NEW CODE FOR VARIET UNLOCKING
-        //----------------------------------
-
-        // Try all of the spawn locations, starting at a random one.
-        int startIndex = Random.Range(0, spawnPoints.Length);
-
+        // 尝试几个出生点
         for (int i = 0; i < spawnPoints.Length; i++)
         {
             Transform point =
-                spawnPoints[(startIndex + i) % spawnPoints.Length];
-
-            if (point == null)
-                continue;
+                spawnPoints[
+                    Random.Range(0, spawnPoints.Length)
+                ];
 
             if (Vector2.Distance(
                 point.position,
@@ -130,9 +88,9 @@ public class EnemySpawner : MonoBehaviour
             {
                 continue;
             }
-            // Spawn the selected enemy at the chosen spawn point.
+
             Instantiate(
-                selectedEnemy,
+                enemyPrefab,
                 point.position,
                 Quaternion.identity
             );

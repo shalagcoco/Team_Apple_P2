@@ -14,10 +14,13 @@ GameObject:
   - component: {fileID: 748799305126078613}
   - component: {fileID: 2543036385690978136}
   - component: {fileID: 7449258968956971785}
+<<<<<<< Updated upstream:Assets/Prefabs/Pre_Enemy/WhiteEnemy.prefab
   - component: {fileID: -4185483835792625947}
   - component: {fileID: 6980399794835112968}
+=======
+>>>>>>> Stashed changes:Assets/Prefabs/Enemy.prefab
   m_Layer: 0
-  m_Name: WhiteEnemy
+  m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -175,9 +178,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
   moveSpeed: 3
   checkDistance: 1
-  obstacleCheckRadius: 0.2
-  avoidanceCommitTime: 0.4
-  directionPersistence: 0.5
   animator: {fileID: 7449258968956971785}
 --- !u!95 &7449258968956971785
 Animator:
@@ -201,6 +201,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+<<<<<<< Updated upstream:Assets/Prefabs/Pre_Enemy/WhiteEnemy.prefab
 --- !u!114 &-4185483835792625947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,3 +230,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   maxHealth: 3
+=======
+>>>>>>> Stashed changes:Assets/Prefabs/Enemy.prefab
