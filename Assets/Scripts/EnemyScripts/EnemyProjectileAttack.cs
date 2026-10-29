@@ -3,7 +3,7 @@ using UnityEngine;
 public class EnemyProjectileAttack : MonoBehaviour
 {
     [Header("Attack Settings")]
-    public float attackRange = 15f;
+    public float attackRange = 15;
     public float attackCooldown = 2f;
 
     [Header("Projectile")]
@@ -61,18 +61,30 @@ public class EnemyProjectileAttack : MonoBehaviour
 
         foreach (RaycastHit2D hit in hits)
         {
-            if (hit.collider != null &&
-                hit.collider.CompareTag("Obstacle"))
-            {
+            if (hit.collider == null)
+                continue;
+
+            // Ignore the enemy's own colliders.
+            if (hit.collider.transform == transform ||
+                hit.collider.transform.IsChildOf(transform))
+                continue;
+
+            // The player has been reached, so the path is clear.
+            if (hit.collider.CompareTag("Player"))
+                return true;
+
+            // An obstacle before the player blocks the shot.
+            if (hit.collider.CompareTag("Obstacle"))
                 return false;
-            }
         }
 
-        return true;
+        // The ray did not reach the player.
+        return false;
     }
 
     void ShootProjectile()
     {
+        Debug.Log("shooting");
         GameObject projectile = Instantiate(
             projectilePrefab,
             transform.position,

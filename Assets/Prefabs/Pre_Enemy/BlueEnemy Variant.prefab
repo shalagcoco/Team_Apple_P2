@@ -110,4 +110,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyProjectileAttack
   attackRange: 15
   attackCooldown: 2
-  projectilePrefab: {fileID: 7153243975219644781, guid: 77ee9f92a0ff58a478649b8fe05ab619, type: 3}
+  projectilePrefab: {fileID: 8555794174788291807, guid: 58381987da5e1144fa821c227dcfb42c, type: 3}
