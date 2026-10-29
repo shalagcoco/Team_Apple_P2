@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2450511434738976680}
   - component: {fileID: 987259566501076801}
   - component: {fileID: 9219442936028764625}
-  - component: {fileID: 6686442735821562750}
+  - component: {fileID: 1469188414107977273}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -158,7 +158,7 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
---- !u!114 &6686442735821562750
+--- !u!114 &1469188414107977273
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -171,6 +171,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bullet
   speed: 8
-  lifetime: 6
-  damage: 1
-  bulletColor: {r: 0, g: 0, b: 0, a: 1}
