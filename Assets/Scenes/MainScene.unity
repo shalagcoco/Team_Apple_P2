@@ -10954,6 +10954,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1772642146}
     - target: {fileID: 4587288409396629619, guid: 355080dbe1fd6824393b026eeec9462e, type: 3}
+      propertyPath: maxHealth
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4587288409396629619, guid: 355080dbe1fd6824393b026eeec9462e, type: 3}
       propertyPath: gameOverText
       value: 
       objectReference: {fileID: 0}
@@ -10995,6 +10999,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4668346760737794373, guid: 355080dbe1fd6824393b026eeec9462e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7261238608458362810, guid: 355080dbe1fd6824393b026eeec9462e, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7261238608458362810, guid: 355080dbe1fd6824393b026eeec9462e, type: 3}
@@ -13802,7 +13810,7 @@ MonoBehaviour:
   firstSpawnDelay: 20
   maxEnemies: 5
   minimumSpawnDistance: 4
-  variantUnlockInterval: 30
+  variantUnlockInterval: 40
 --- !u!4 &1788425421
 Transform:
   m_ObjectHideFlags: 0

@@ -37,6 +37,16 @@ public class PlayerDeath : MonoBehaviour
             TakeDamage();
         }
     }
+    //the range attack
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("EnemyProjectile")
+            && canTakeDamage
+            && !isDead)
+        {
+            TakeDamage();
+        }
+    }
 
     void TakeDamage()
     {
