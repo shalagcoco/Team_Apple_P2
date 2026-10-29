@@ -48,7 +48,7 @@ public class EnemyProjectile : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log( "EnemyProjectile hit: " + other.name +" | Tag: " + other.tag,this);
+        //Debug.Log( "EnemyProjectile hit: " + other.name +" | Tag: " + other.tag,this);
 
         if (other.CompareTag("Player") ||
             other.CompareTag("Obstacle"))
@@ -57,8 +57,8 @@ public class EnemyProjectile : MonoBehaviour
         }
     }
 
-    void OnDestroy()
-    {
-        Debug.Log("EnemyProjectile destroyed at time: " +Time.time +" | Position: " +transform.position, this);
-    }
+    //void OnDestroy()
+    //{
+    //    Debug.Log("EnemyProjectile destroyed at time: " +Time.time +" | Position: " +transform.position, this);
+    //}
 }
